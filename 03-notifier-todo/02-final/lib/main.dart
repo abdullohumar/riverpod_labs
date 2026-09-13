@@ -4,14 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'models/todo.dart';
 import 'providers/todo_notifier.dart';
 
-/// LAB 03 — NOTIFIER
-///
-/// Lihat providers/todo_notifier.dart untuk konsep intinya. File ini
-/// "cuma" UI: dia tidak pernah memutasi state sendiri, hanya memanggil
-/// method di notifier (`ref.read(todosProvider.notifier).addTodo(...)`)
-/// dan meng-watch state hasilnya (`ref.watch(todosProvider)`) untuk
-/// ditampilkan.
-
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -46,9 +38,7 @@ class _TodoPageState extends ConsumerState<TodoPage> {
   }
 
   void _submit() {
-    // .notifier -> instance TodoNotifier -> panggil method di dalamnya.
-    // Kita pakai ref.read di sini karena ini berjalan di dalam callback,
-    // bukan build.
+
     ref.read(todosProvider.notifier).addTodo(_controller.text);
     _controller.clear();
   }

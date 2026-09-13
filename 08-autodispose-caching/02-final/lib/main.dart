@@ -41,10 +41,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   }
 
   void _onChanged(String value) {
-    // Debouncing: jangan pukul "network" di setiap keystroke, hanya
-    // begitu pengetikan berhenti selama 300ms. Ini juga menjaga jumlah
-    // nilai argumen `.family` (dan karenanya instance provider) yang
-    // berbeda tetap sedikit.
+
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), () {
       ref.read(searchQueryProvider.notifier).state = value.trim().toLowerCase();

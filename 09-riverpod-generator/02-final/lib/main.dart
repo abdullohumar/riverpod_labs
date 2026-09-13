@@ -39,9 +39,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Provider hasil generate dibaca/di-watch PERSIS seperti yang ditulis
-    // tangan — anotasi hanya mengubah cara provider itu DIDEFINISIKAN,
-    // bukan cara dia dikonsumsi.
+
     final greeting = ref.watch(greetingProvider);
     final counter = ref.watch(counterProvider);
     final searchAsync = ref.watch(searchWordsProvider(_query));

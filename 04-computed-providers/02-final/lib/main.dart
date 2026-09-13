@@ -3,12 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'providers/todo_providers.dart';
 
-/// LAB 04 — COMPUTED / DERIVED PROVIDERS
-///
-/// Lihat providers/todo_providers.dart untuk `filteredTodosProvider`,
-/// konsep utamanya. File ini juga mendemonstrasikan `.select` pada widget
-/// `_CompletedBadge` di bawah — baca komentarnya baik-baik.
-
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -44,9 +38,7 @@ class _TodoPageState extends ConsumerState<TodoPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Widget ini hanya pernah meng-watch provider TURUNAN — dia tidak
-    // perlu tahu sama sekali bahwa ada filter untuk memutuskan apa yang
-    // dirender.
+
     final visibleTodos = ref.watch(filteredTodosProvider);
     final filter = ref.watch(filterProvider);
 
@@ -123,20 +115,6 @@ class _TodoPageState extends ConsumerState<TodoPage> {
   }
 }
 
-/// `.select` memungkinkan widget bergantung pada SATU potongan kecil dari
-/// nilai sebuah provider, bukan keseluruhannya, jadi dia hanya rebuild
-/// saat potongan itu berubah.
-///
-/// Tanpa `.select`, meng-watch `todosProvider` langsung di sini akan
-/// me-rebuild badge ini setiap kali ADA todo yang ditambah, dihapus, atau
-/// di-toggle — bahkan saat jumlah yang selesai tidak berubah (misalnya
-/// menambah todo baru yang belum dicentang). Dengan `.select`, dia hanya
-/// rebuild saat hasil hitungannya sendiri berbeda dari sebelumnya.
-///
-/// Penghitung `(rebuilt Nx)` di bawah HANYA instrumentasi untuk demo ini
-/// — hapus di kode sungguhan. Coba ganti ke `ref.watch(todosProvider)`
-/// (list penuh) lalu tambahkan beberapa todo: perhatikan angkanya
-/// melompat di setiap penambahan, bukan cuma saat jumlah selesai berubah.
 class _CompletedBadge extends ConsumerWidget {
   const _CompletedBadge();
 

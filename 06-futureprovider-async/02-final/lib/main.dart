@@ -30,16 +30,12 @@ class ArticleListPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Articles')),
       body: RefreshIndicator(
-        // Pull-to-refresh: `ref.refresh` menjalankan ulang fungsi provider
-        // dan mengembalikan Future hasilnya, jadi RefreshIndicator bisa
-        // meng-await-nya dan tahu kapan harus menyembunyikan spinner-nya.
+
         onRefresh: () => ref.refresh(articlesProvider.future),
-        // `.when` memaksamu menangani ketiga kondisi AsyncValue.
+
         child: articlesAsync.when(
           data: (articles) => ListView.builder(
-            // AlwaysScrollable supaya RefreshIndicator tetap berfungsi
-            // meski list-nya cukup pendek sehingga tidak bisa di-scroll
-            // sendiri.
+
             physics: const AlwaysScrollableScrollPhysics(),
             itemCount: articles.length,
             itemBuilder: (context, index) {
@@ -71,8 +67,7 @@ class ArticleDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Setiap articleId mendapat AsyncValue independennya sendiri
-    // (gabungan family dari Lab 05 + async dari lab ini).
+
     final articleAsync = ref.watch(articleProvider(articleId));
 
     return Scaffold(
@@ -117,10 +112,7 @@ class _ErrorView extends StatelessWidget {
             const SizedBox(height: 12),
             Text(message, textAlign: TextAlign.center),
             const SizedBox(height: 12),
-            // ref.invalidate menandai provider sebagai basi (stale):
-            // pembacaan berikutnya akan menjalankan fungsinya lagi dari
-            // nol. Ini cara paling sederhana untuk membuat tombol
-            // "Retry".
+
             FilledButton(onPressed: onRetry, child: const Text('Retry')),
           ],
         ),

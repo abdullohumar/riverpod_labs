@@ -42,9 +42,7 @@ class StreamsPage extends ConsumerWidget {
           children: [
             const Text('Live clock (StreamProvider)'),
             const SizedBox(height: 8),
-            // AsyncValue.when tetap berlaku untuk stream: loading muncul
-            // sekali (sebelum event pertama), lalu jadi `data` di setiap
-            // event berikutnya.
+
             clockAsync.when(
               data: (time) => Text(
                 _formatTime(time),

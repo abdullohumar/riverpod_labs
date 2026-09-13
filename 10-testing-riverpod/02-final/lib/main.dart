@@ -4,11 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'providers/todo_notifier.dart';
 import 'providers/user_providers.dart';
 
-/// LAB 10 — TESTING RIVERPOD
-///
-/// Aplikasi ini sengaja dibuat kecil — materi sesungguhnya ada di test/.
-/// Buka test/todo_notifier_test.dart dan test/user_name_test.dart.
-
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }

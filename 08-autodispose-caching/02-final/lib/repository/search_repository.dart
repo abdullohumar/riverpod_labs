@@ -1,4 +1,3 @@
-/// Backend pencarian palsu di atas daftar kata tetap yang kecil.
 class SearchRepository {
   static const _words = [
     'provider', 'consumer', 'notifier', 'family', 'autoDispose', 'keepAlive',

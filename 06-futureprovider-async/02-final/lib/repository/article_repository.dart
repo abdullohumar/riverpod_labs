@@ -2,10 +2,6 @@ import 'dart:math';
 
 import '../models/article.dart';
 
-/// Backend palsu. Di aplikasi sungguhan ini akan memanggil `http`/`dio`.
-/// Delay buatan dan kegagalan acaknya sengaja ditaruh di sini, supaya
-/// kamu benar-benar melihat kondisi loading dan error milik `AsyncValue`,
-/// bukan cuma jalur mulusnya saja.
 class ArticleRepository {
   final _articles = const [
     Article(id: 'a1', title: 'Why immutability matters', body: 'Immutable state makes changes explicit...'),

@@ -4,14 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'models/product.dart';
 import 'providers/catalog_providers.dart';
 
-/// LAB 05 — FAMILY PROVIDERS
-///
-/// Lihat providers/catalog_providers.dart untuk konsep intinya. File ini
-/// menunjukkan cara family provider DIBACA dari sebuah widget: kamu
-/// memanggilnya dengan sebuah argumen,
-/// `ref.watch(cartQuantityProvider(product.id))`, dan mendapat kembali
-/// provider biasa yang khusus untuk argumen itu.
-
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -58,12 +50,6 @@ class CatalogPage extends ConsumerWidget {
   }
 }
 
-/// Widget ini hanya butuh `id` sebuah produk — dia mengambil semua yang
-/// lain (produknya sendiri, dan jumlah di keranjangnya) lewat family
-/// provider yang diparameterisasi dengan id itu. Ini membuat parent-nya
-/// (`CatalogPage`) tidak perlu meneruskan objek utuh ke bawah, dan
-/// artinya tiap tile hanya rebuild saat produk/jumlahnya SENDIRI berubah,
-/// bukan saat milik sibling-nya berubah.
 class _ProductTile extends ConsumerWidget {
   const _ProductTile({required this.productId});
 
@@ -71,8 +57,7 @@ class _ProductTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Memanggil family provider dengan sebuah argumen mengembalikan
-    // provider biasa — watch/read seperti provider lain pada umumnya.
+
     final product = ref.watch(productProvider(productId));
     final quantity = ref.watch(cartQuantityProvider(productId));
     final notifier = ref.read(cartQuantityProvider(productId).notifier);

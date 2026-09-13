@@ -3,32 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// LAB 01 — PROVIDER BASICS
-///
-/// Tujuan: memahami building block paling dasar di Riverpod, `Provider`,
-/// dan dua cara widget berinteraksi dengannya: `ref.watch` dan `ref.read`.
-///
-/// `Provider` menyediakan sebuah nilai yang dihitung sekali dan tidak
-/// pernah berubah sendiri (tidak ada API seperti `setState`). Provider
-/// cocok dipakai untuk:
-///   - dependency injection (repository, service, konfigurasi)
-///   - nilai yang *diturunkan* (derived) dari provider lain
-///
-/// Kalau kamu butuh nilai yang berubah seiring waktu sebagai reaksi dari
-/// aksi pengguna, `Provider` adalah alat yang salah — lihat Lab 02
-/// (StateProvider) dan Lab 03 (Notifier) untuk itu.
-
 void main() {
   runApp(
-    // ProviderScope menyimpan state dari setiap provider di aplikasi.
-    // Tanpa ini, pemanggilan ref.watch/ref.read di mana pun akan error
-    // saat runtime. Biasanya diletakkan sekali saja, tepat di atas root
-    // widget.
     const ProviderScope(child: MyApp()),
   );
 }
 
-/// Model immutable sederhana. Tidak ada yang spesifik Riverpod di sini.
 class AppInfo {
   const AppInfo({required this.name, required this.version});
 
@@ -36,18 +16,10 @@ class AppInfo {
   final String version;
 }
 
-/// Provider paling dasar: hanya mengembalikan nilai konstan.
-/// Widget mana pun yang melakukan `ref.watch(appInfoProvider)` akan
-/// mendapat instance yang sama — Riverpod menghitungnya secara lazy,
-/// sekali saja, saat pertama kali dibaca, lalu meng-cache-nya selama
-/// ProviderScope masih hidup.
 final appInfoProvider = Provider<AppInfo>((ref) {
   return const AppInfo(name: 'Provider Basics Lab', version: '1.0.0');
 });
 
-/// Provider yang nilainya berupa logika *turunan* (derived), bukan
-/// sekadar konstanta. Tetap hanya jalan sekali (waktu hari tidak berubah
-/// selama aplikasi terbuka), yang justru pas untuk kegunaan `Provider`.
 final greetingProvider = Provider<String>((ref) {
   final hour = DateTime.now().hour;
   if (hour < 11) return 'Good morning';
@@ -56,11 +28,6 @@ final greetingProvider = Provider<String>((ref) {
   return 'Good night';
 });
 
-/// "Repository" adalah class yang tahu cara mengambil/menghasilkan data.
-/// Menyediakannya lewat Provider adalah pola dependency injection klasik
-/// ala Riverpod: widget tidak pernah membuat `QuoteRepository()` sendiri,
-/// mereka meminta ke provider. Ini membuat implementasinya mudah diganti
-/// nanti (misalnya saat testing, lihat Lab 10).
 class QuoteRepository {
   final _quotes = const [
     'Simple things should be simple, complex things should be possible.',
@@ -90,19 +57,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ConsumerWidget adalah pengganti StatelessWidget ala Riverpod: method
-// build-nya menerima parameter tambahan `WidgetRef ref` untuk membaca
-// provider.
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // ref.watch membuat widget ini berlangganan (subscribe) ke provider:
-    // kalau nilai provider berubah, widget ini akan otomatis rebuild.
-    // (Kedua provider ini tidak pernah berubah, tapi inilah pola yang
-    // akan kamu pakai berulang di lab-lab selanjutnya untuk nilai yang
-    // BENAR-BENAR berubah.)
     final appInfo = ref.watch(appInfoProvider);
     final greeting = ref.watch(greetingProvider);
 
@@ -127,8 +86,6 @@ class HomePage extends ConsumerWidget {
   }
 }
 
-// Bagian ini butuh local state sendiri (quote yang sedang ditampilkan),
-// makanya jadi ConsumerStatefulWidget, bukan ConsumerWidget.
 class _QuoteCard extends ConsumerStatefulWidget {
   const _QuoteCard();
 
@@ -140,10 +97,6 @@ class _QuoteCardState extends ConsumerState<_QuoteCard> {
   String? _quote;
 
   void _newQuote() {
-    // ref.read mengambil nilai provider SEKALI SAJA, tanpa berlangganan.
-    // Pakai ref.read di dalam callback (onPressed, onTap, initState...) —
-    // jangan pernah dipakai di dalam build() untuk membaca nilai yang
-    // ingin kamu reaksikan; pakai ref.watch untuk itu.
     final repository = ref.read(quoteRepositoryProvider);
     setState(() => _quote = repository.randomQuote());
   }
