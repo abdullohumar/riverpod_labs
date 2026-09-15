@@ -55,6 +55,12 @@ ref.listen<int>(counterProvider, (previous, next) {
 Ini menjalankan callback sekali setiap kali ada perubahan, tanpa membuat
 `build()` dipanggil ulang dengan sendirinya.
 
+| Method | Fungsi |
+|---|---|
+| `watch` | Baca + pantau perubahan → rebuild UI |
+| `read` | Baca sekali → tidak memantau perubahan |
+| `listen` | Pantau perubahan → jalankan callback |
+
 ## Aplikasi yang akan kamu buat
 
 Counter dengan:
